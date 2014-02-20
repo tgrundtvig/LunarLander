@@ -13,7 +13,8 @@ import applicationapi.graphics.Color;
 import applicationapi.graphics.Sprite;
 import applicationapi.graphics.SpriteFactory;
 import applicationapi.input.keyboard.Key;
-import applicationapi.input.keyboard.KeyEvent;
+import applicationapi.input.keyboard.KeyPressedEvent;
+import applicationapi.input.keyboard.KeyReleasedEvent;
 import applicationapi.input.keyboard.KeyboardListener;
 import util.SpriteUtil;
 
@@ -29,7 +30,6 @@ public class LunarLander implements Application, KeyboardListener
     private Sprite rightLeg;
     private Sprite thrust;
     private Sprite pad;
-    private boolean quit;
     private int width;
     private int height;
     private GameState state;
@@ -41,7 +41,6 @@ public class LunarLander implements Application, KeyboardListener
     {
         this.state = new GameState(ROCKET_HEIGHT, 0, 5.0f);
         this.thrustOn = false;
-        quit = false;
         width = device.getScreen().getWidth();
         height = device.getScreen().getHeight();
         SpriteFactory sf = device.getScreen().getSpriteFactory();
@@ -66,7 +65,7 @@ public class LunarLander implements Application, KeyboardListener
             stateTime += 10;
             state.update(thrustOn);
         }    
-        return !quit;
+        return true;
     }
 
     @Override
@@ -95,22 +94,18 @@ public class LunarLander implements Application, KeyboardListener
     }
 
     @Override
-    public void onKeyPress(KeyEvent ke)
+    public void onKeyPressed(KeyPressedEvent e)
     {
-        if(ke.getKey() == Key.VK_SPACE)
+        if(e.getKey() == Key.VK_SPACE)
         {
             thrustOn = true;
-        }
-        else if(ke.getKey() == Key.VK_ESC)
-        {
-            quit = true;
         }
     }
 
     @Override
-    public void onKeyRelease(KeyEvent ke)
+    public void onKeyReleased(KeyReleasedEvent e)
     {
-        if(ke.getKey() == Key.VK_SPACE)
+        if(e.getKey() == Key.VK_SPACE)
         {
             thrustOn = false;
         }
